@@ -9,7 +9,7 @@
 	</parent>
 	<artifactId>haushaltsbuch.core</artifactId>
 	<name>haushaltsbuch.core</name>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<properties>
 		<java.version>11</java.version>
@@ -44,11 +44,11 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-            <groupId>npaepke</groupId>
-            <artifactId>haushaltsbuch.ui</artifactId>
-            <version>${project.version}</version>
-            <scope>runtime</scope>
-        </dependency>
+			<groupId>npaepke</groupId>
+			<artifactId>haushaltsbuch.ui</artifactId>
+			<version>${project.version}</version>
+			<scope>runtime</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -57,35 +57,35 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			<plugin>
+			<!--<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
                     <packagingExcludes>WEB-INF/lib/tomcat-*.jar</packagingExcludes>
                     <warName>haushaltsbuch-app</warName>
                 </configuration>
-            </plugin>
-			
-<plugin>
-    <artifactId>maven-resources-plugin</artifactId>
-    <executions>
-        <execution>
-            <id>copy-resources</id>
-            <phase>validate</phase>
-            <goals>
-                <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-                <outputDirectory>${project.build.directory}/classes/resources/</outputDirectory>
-                <resources>
-                    <resource>
-                        <directory>${project.parent.basedir}/ui/dist</directory>
-                    </resource>
-                </resources>
-            </configuration>
-        </execution>
-    </executions>
-</plugin>
+            </plugin>-->
+
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/classes/resources/</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.parent.basedir}/ui/dist</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>		
 	</build>
 

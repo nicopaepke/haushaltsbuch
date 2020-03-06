@@ -1,6 +1,6 @@
 {
-  "name": "np-app",
-  "version": "0.0.0",
+  "name": "haushaltsbuch",
+  "version": "0.0.1",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
