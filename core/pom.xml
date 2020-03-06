@@ -79,7 +79,7 @@
                 <outputDirectory>${project.build.directory}/classes/resources/</outputDirectory>
                 <resources>
                     <resource>
-                        <directory>${project.parent.basedir}/ui/src/main/web/dist</directory>
+                        <directory>${project.parent.basedir}/ui/dist</directory>
                     </resource>
                 </resources>
             </configuration>
