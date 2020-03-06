@@ -1,5 +1,5 @@
 node_modules/
 node
 target/
-src/main/web/dist/
-src/main/web/package-lock.json
+dist/
+package-lock.json
