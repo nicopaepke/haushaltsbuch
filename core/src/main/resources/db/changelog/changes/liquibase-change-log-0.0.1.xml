@@ -14,4 +14,19 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="create.purpose" author="npaepke">
+        <createTable tableName="HB_Purpose">
+            <column name="UUID" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="parent_uuid" type="uuid">
+                <constraints foreignKeyName="FK_Purpose_Parent" references="HB_Purpose(UUID)"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
 </databaseChangeLog>

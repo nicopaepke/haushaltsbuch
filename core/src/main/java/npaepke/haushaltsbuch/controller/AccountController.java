@@ -17,46 +17,46 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import npaepke.haushaltsbuch.models.Account;
-import npaepke.haushaltsbuch.repos.AccountRepository;
+import npaepke.haushaltsbuch.services.AccountService;
+import npaepke.haushaltsbuch.services.dtos.AccountDTO;
 
 @RestController
 @RequestMapping("/accounts")
 @RequiredArgsConstructor
 public class AccountController {
 
-    private final AccountRepository accountRepository;
+    private final AccountService accountService;
 
     @GetMapping
-    public ResponseEntity<List<Account>> getAccounts(@RequestHeader HttpHeaders httpHeaders) {
-        List<Account> accounts = accountRepository.findAll();
+    public ResponseEntity<List<AccountDTO>> getAccounts(@RequestHeader HttpHeaders httpHeaders) {
+        List<AccountDTO> accounts = accountService.findAll();
         return ResponseEntity.ok(accounts);
     }
 
     @GetMapping(path = "/{uuid}")
-    public ResponseEntity<Account> getAccount(@RequestHeader HttpHeaders httpHeaders, @PathVariable UUID uuid) {
-        Optional<Account> account = accountRepository.findById(uuid);
+    public ResponseEntity<AccountDTO> getAccount(@RequestHeader HttpHeaders httpHeaders, @PathVariable UUID uuid) {
+        Optional<AccountDTO> account = accountService.findById(uuid);
         return account.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping()
-    public ResponseEntity<Account> createAccount(@RequestHeader HttpHeaders httpHeaders, @RequestBody Account account) {
-        Account createAccount = accountRepository.save(account);
+    public ResponseEntity<AccountDTO> createAccount(@RequestHeader HttpHeaders httpHeaders, @RequestBody AccountDTO account) {
+        AccountDTO createAccount = accountService.save(account);
         return ResponseEntity.ok(createAccount);
     }
 
     @PutMapping(path = "/{uuid}")
-    public ResponseEntity<Account> updateAccount(@RequestHeader HttpHeaders httpHeaders, @PathVariable UUID uuid,
-        @RequestBody Account account) {
-        if (account.getUuid() != uuid) {
+    public ResponseEntity<AccountDTO> updateAccount(@RequestHeader HttpHeaders httpHeaders, @PathVariable UUID uuid,
+        @RequestBody AccountDTO account) {
+        if (!uuid.equals(account.getUuid())) {
             return ResponseEntity.badRequest().build();
         }
-        Account createAccount = accountRepository.save(account);
+        AccountDTO createAccount = accountService.save(account);
         return ResponseEntity.ok(createAccount);
     }
 
     @DeleteMapping(path = "/{uuid}")
-    public void updateAccount(@RequestHeader HttpHeaders httpHeaders, @PathVariable UUID uuid) {
-        accountRepository.deleteById(uuid);
+    public void deleteAccount(@RequestHeader HttpHeaders httpHeaders, @PathVariable UUID uuid) {
+        accountService.deleteById(uuid);
     }
 }
