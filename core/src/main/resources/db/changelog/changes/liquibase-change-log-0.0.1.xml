@@ -29,4 +29,16 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="create.timeseries" author="npaepke">
+        <createTable tableName="HB_Time_Series">
+            <column name="UUID" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="reference_uuid" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="data_points" type="clob"/>
+        </createTable>
+    </changeSet>
+
 </databaseChangeLog>
