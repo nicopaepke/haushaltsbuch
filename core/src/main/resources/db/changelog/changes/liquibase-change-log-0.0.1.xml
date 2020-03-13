@@ -40,5 +40,38 @@
             <column name="data_points" type="clob"/>
         </createTable>
     </changeSet>
+    <changeSet id="create.transaction" author="npaepke">
+        <createTable tableName="HB_Transaction">
+            <column name="UUID" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="purpose" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="source_account" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="target_account" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="transaction_type" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="number">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(4000)"/>
+            <column name="receipt_number" type="int"/>
+            <column name="creation_time_stamp" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
 
 </databaseChangeLog>

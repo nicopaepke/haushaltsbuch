@@ -16,7 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import npaepke.haushaltsbuch.models.timeseries.TimeSeries;
 import npaepke.haushaltsbuch.models.timeseries.TimeSeriesDataPoint;
+import npaepke.haushaltsbuch.models.transaction.ETransactionType;
+import npaepke.haushaltsbuch.models.transaction.Transaction;
+import npaepke.haushaltsbuch.repos.AccountRepository;
+import npaepke.haushaltsbuch.repos.PurposeRepository;
 import npaepke.haushaltsbuch.repos.TimeSeriesRepository;
+import npaepke.haushaltsbuch.repos.TransactionRepository;
 
 @RestController
 @RequestMapping("/test")
@@ -24,6 +29,12 @@ import npaepke.haushaltsbuch.repos.TimeSeriesRepository;
 public class TestController {
 
     private final TimeSeriesRepository timeSeriesRepository;
+
+    private final TransactionRepository transactionRepository;
+
+    private final PurposeRepository purposeRepository;
+
+    private final AccountRepository accountRepository;
 
     @GetMapping
     public ResponseEntity<List<TimeSeries>> getAccounts(@RequestHeader HttpHeaders httpHeaders) {
@@ -43,5 +54,19 @@ public class TestController {
         timeSeries.setDataPoints(dataPoints);
         TimeSeries createdTimeSeries = timeSeriesRepository.save(timeSeries);
         return ResponseEntity.ok(createdTimeSeries);
+    }
+
+    @PostMapping("/transaction")
+    public ResponseEntity<Transaction> testTransaction(@RequestHeader HttpHeaders httpHeaders) {
+        Transaction transaction = new Transaction();
+        transaction.setCreationTimeStamp(new DateTime());
+        transaction.setStartDate(new DateTime("2020-01-01T00:00:00"));
+        transaction.setEndDate(new DateTime("2020-01-01T00:00:00"));
+        transaction.setPurpose(purposeRepository.findAll().get(0));
+        transaction.setSourceAccount(accountRepository.findAll().get(0));
+        transaction.setTargetAccount(accountRepository.findAll().get(1));
+        transaction.setTransactionType(ETransactionType.ONE_TIME);
+        transaction.setValue(12.56);
+        return ResponseEntity.ok(this.transactionRepository.save(transaction));
     }
 }
