@@ -9,19 +9,21 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import npaepke.haushaltsbuch.api.dtos.TransactionDTO;
 import npaepke.haushaltsbuch.dm.models.timeseries.TimeSeries;
 import npaepke.haushaltsbuch.dm.models.timeseries.TimeSeriesDataPoint;
-import npaepke.haushaltsbuch.dm.models.transaction.ETransactionType;
-import npaepke.haushaltsbuch.dm.models.transaction.Transaction;
 import npaepke.haushaltsbuch.dm.repos.AccountRepository;
 import npaepke.haushaltsbuch.dm.repos.PurposeRepository;
 import npaepke.haushaltsbuch.dm.repos.TimeSeriesRepository;
 import npaepke.haushaltsbuch.dm.repos.TransactionRepository;
+import npaepke.haushaltsbuch.dm.services.TransactionService;
 
 @RestController
 @RequestMapping("/test")
@@ -35,6 +37,8 @@ public class TestController {
     private final PurposeRepository purposeRepository;
 
     private final AccountRepository accountRepository;
+
+    private final TransactionService transactionService;
 
     @GetMapping
     public ResponseEntity<List<TimeSeries>> getAccounts(@RequestHeader HttpHeaders httpHeaders) {
@@ -57,16 +61,11 @@ public class TestController {
     }
 
     @PostMapping("/transaction")
-    public ResponseEntity<Transaction> testTransaction(@RequestHeader HttpHeaders httpHeaders) {
-        Transaction transaction = new Transaction();
-        transaction.setCreationTimeStamp(new DateTime());
-        transaction.setStartDate(new DateTime("2020-01-01T00:00:00"));
-        transaction.setEndDate(new DateTime("2020-01-01T00:00:00"));
-        transaction.setPurpose(purposeRepository.findAll().get(0));
-        transaction.setSourceAccount(accountRepository.findAll().get(0));
-        transaction.setTargetAccount(accountRepository.findAll().get(1));
-        transaction.setTransactionType(ETransactionType.ONE_TIME);
-        transaction.setValue(12.56);
-        return ResponseEntity.ok(this.transactionRepository.save(transaction));
+    public ResponseEntity<Object> testTransaction(@RequestHeader HttpHeaders httpHeaders, @RequestParam(name = "count") Integer count,
+        @RequestBody TransactionDTO transaction) {
+        for (int i = 0; i < count; i++) {
+            this.transactionService.createTransaction(transaction);
+        }
+        return ResponseEntity.ok().build();
     }
 }

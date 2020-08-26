@@ -2,6 +2,7 @@ package npaepke.haushaltsbuch.dm.services;
 
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import npaepke.haushaltsbuch.dm.mapper.TransactionMapper;
 import npaepke.haushaltsbuch.dm.models.Account;
 import npaepke.haushaltsbuch.dm.models.Purpose;
 import npaepke.haushaltsbuch.dm.models.transaction.Transaction;
+import npaepke.haushaltsbuch.dm.models.transaction.TransactionValue;
 import npaepke.haushaltsbuch.dm.repos.AccountRepository;
 import npaepke.haushaltsbuch.dm.repos.PurposeRepository;
 import npaepke.haushaltsbuch.dm.repos.TransactionRepository;
@@ -51,9 +53,24 @@ public class TransactionService {
             this.accountRepository.findById(transactionDTO.getTargetAccountUUID()).orElseThrow(ElementNotFoundException::new);
         Transaction transaction =
             this.transactionMapper.convertTransaction(existingTransaction, transactionDTO, purpose, sourceAccount, targetAccount);
+
+        this.createTransactionValues(transaction);
+
         this.validate(transaction);
         transaction = this.transactionRepository.save(transaction);
         return this.transactionMapper.convertTransaction(transaction);
+    }
+
+    private void createTransactionValues(Transaction transaction) {
+        // TODO
+        DateTime date = new DateTime().withTimeAtStartOfDay();
+        for (int i = 0; i < 100; i++) {
+            TransactionValue transactionValue = new TransactionValue();
+            transactionValue.setDate(date);
+            transactionValue.setValue(i);
+            transaction.addTransactionValue(transactionValue);
+            date = date.plusDays(1);
+        }
     }
 
     private void validate(Transaction transaction) {

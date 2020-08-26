@@ -1,5 +1,6 @@
 package npaepke.haushaltsbuch.api.dtos;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.joda.time.DateTime;
@@ -39,4 +40,6 @@ public class TransactionDTO {
     private int receiptNumber;
 
     private DateTime creationTimeStamp;
+
+    private List<TransactionValueDTO> transactionValues;
 }

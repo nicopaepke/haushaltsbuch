@@ -27,7 +27,7 @@ public interface TransactionMapper {
 
     List<TransactionDTO> convertTransactions(List<Transaction> transactions);
 
-    @Mappings({@Mapping(target = "uuid", source = "transaction.uuid")
+    @Mappings({@Mapping(target = "uuid", source = "transaction.uuid"), @Mapping(target = "transactionValues", ignore = true)
     })
     Transaction convertTransaction(@MappingTarget Transaction target, TransactionDTO transaction, Purpose purpose, Account sourceAccount,
         Account targetAccount);

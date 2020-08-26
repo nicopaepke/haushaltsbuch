@@ -74,4 +74,20 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="create.transactionValue" author="npaepke">
+        <createTable tableName="HB_Transaction_Value">
+            <column name="UUID" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="transaction_id" type="uuid">
+                <constraints nullable="false" foreignKeyName="FK_TransValue_Trans" references="HB_Transaction(UUID)"/>
+            </column>
+            <column name="value" type="number">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>

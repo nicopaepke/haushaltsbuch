@@ -1,7 +1,10 @@
 package npaepke.haushaltsbuch.dm.models.transaction;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -10,6 +13,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -25,6 +31,10 @@ import npaepke.haushaltsbuch.dm.models.Purpose;
 @Setter
 @Entity
 @Table(name = "HB_Transaction")
+@NamedEntityGraph(name = "Transaction.Values",
+    attributeNodes = {@NamedAttributeNode("transactionValues"), @NamedAttributeNode("purpose"), @NamedAttributeNode("sourceAccount"),
+        @NamedAttributeNode("targetAccount")
+    })
 public class Transaction {
 
     @Id
@@ -69,4 +79,11 @@ public class Transaction {
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime creationTimeStamp;
 
+    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TransactionValue> transactionValues = new ArrayList<>();
+
+    public void addTransactionValue(TransactionValue transactionValue) {
+        transactionValue.setTransaction(this);
+        this.transactionValues.add(transactionValue);
+    }
 }
